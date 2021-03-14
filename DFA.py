@@ -34,8 +34,7 @@ class DFA:
         self.print_transition_table()
 
     def get_input(self, input_string):
-        for i in range(len(input_string)):
-            input_char = input_string[i]
+        for input_char in input_string:
             if input_char not in self.input_set:
                 print(input_char)
                 print("There is no input in input_set")
