@@ -41,4 +41,4 @@
 3. Example
 
 
-![alt text](imgs/dfa.png)
+    ![alt text](imgs/dfa.png)
