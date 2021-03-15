@@ -72,11 +72,11 @@ class DFA:
                                                 & (self.transition_table['input_value']==input_char)        \
                                             ]['next_state']
                                       )
-
+        # print current state and check whether 
+        # the input string is accepted or not
         print("current state: ", self.__current_state)
         print("Accepted ? ---> ", self.__accepted())
         self.__reset()
-
         return self
 
     def __reset(self):
