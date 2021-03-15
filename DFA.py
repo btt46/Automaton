@@ -22,7 +22,7 @@ class DFA:
         # check type of input in the set of input values
         for input_value in self.__input_set:
             if isinstance(input_value, str) == False:
-                raise ValueError("The input value must be a char")
+                raise ValueError("The input value must be a string")
 
         # check initial_state
         if self.__initial_state not in self.__states:
