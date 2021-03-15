@@ -9,7 +9,7 @@ class DFA:
         self.__current_state = self.__initial_state
         self.__final_states = set(final_states)
         self.__transitions = transitions
-        
+
         # check variables
         self.__check_variables()
         
@@ -62,21 +62,21 @@ class DFA:
         self.print_transition_table()
 
     def get_input(self, input_string):
-
         for input_char in input_string:
             if input_char not in self.__input_set:
                 print(input_char)
                 print("There is no input in input_set")
                 return self
-
             self.__current_state = int(self.transition_table.loc[
                                                 (self.transition_table['current_state']== self.__current_state) \
                                                 & (self.transition_table['input_value']==input_char)        \
                                             ]['next_state']
                                       )
+
         print("current state: ", self.__current_state)
         print("Accepted ? ---> ", self.__accepted())
         self.__reset()
+
         return self
 
     def __reset(self):
