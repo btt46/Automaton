@@ -2,12 +2,12 @@ import pandas as pd
 from tabulate import tabulate
 
 class DFA:
-    def __init__(self, states, input_set, transitions, initial_state, final_states):
+    def __init__(self, states, input_set, transitions, initial_state, accepted_states):
         self.__states =  set(states)
         self.__input_set = set(input_set)
         self.__initial_state = initial_state
         self.__current_state = self.__initial_state
-        self.__final_states = set(final_states)
+        self.__accepted_states = set(accepted_states)
         self.__transitions = transitions
 
         # check variables
@@ -33,7 +33,7 @@ class DFA:
             raise ValueError("The current state must be in the set of states")    
 
         # check whether the set of final states is a subset of the set of states
-        if self.__final_states.issubset(self.__states) == False:
+        if self.__accepted_states.issubset(self.__states) == False:
             raise ValueError("The set of final states is not a subset of the set of states")        
 
     @property
@@ -49,18 +49,42 @@ class DFA:
         
         return pd.DataFrame({'current_state': _state, 'input_value': _input, 'next_state': _next_state})
 
+    # Return the input states
+    @property
+    def states(self):
+        return self.__states
+    
+    # Return the set of input values
+    @property
+    def input_set(self):
+        return self.__input_set
+
+    # Return the initial state
+    @property 
+    def initial_state(self):
+        return self.__initial_state
+
+    # return the accepted states
+    @property
+    def accepted_states(self):
+        return self.__accepted_states
+
+    # print the trasition table
     def print_transition_table(self):
         print(tabulate(self.transition_table.set_index('current_state'), headers = 'keys', tablefmt = 'pretty')) 
         return self
 
+    # print the DFA
     def print_DFA(self):
-        print("states: ",self.__states)
-        print("inputs: ",self.__input_set)
-        print("Initial state: ", self.__initial_state)
-        print("Final state: ", self.__final_states)
+        print("states: ",self.states)
+        print("inputs: ",self.input_set)
+        print("Initial state: ", self.initial_state)
+        print("Final state: ", self.accepted_states)
         print("\n\t\tTransition table")
         self.print_transition_table()
 
+    # get an input string and return the final state and check
+    # whether the given string is accepted or not
     def get_input(self, input_string):
         for input_char in input_string:
             if input_char not in self.__input_set:
@@ -76,71 +100,20 @@ class DFA:
         # the input string is accepted or not
         print("current state: ", self.__current_state)
         print("Accepted ? ---> ", self.__accepted())
+
+        output = (self.__current_state, self.__accepted())
+
         self.__reset()
-        return self
 
+        return output
+
+    # set the current state to the initial state
     def __reset(self):
-        self.__current_state = self.__initial_state
+        self.__current_state = self.initial_state
 
+    # check whether the current state is a accepted state
     def __accepted(self):
-        if self.__current_state in self.__final_states:
+        if self.__current_state in self.accepted_states:
             return True
-            
+        return False
     
-if __name__ == "__main__":
-    transitions_func = [
-        {
-            'current_state' : 0,
-            'input_value' : '0',
-            'next_state': 2
-        },
-        {
-            'current_state' : 0,
-            'input_value' : '1',
-            'next_state': 1
-        },
-        {
-            'current_state' : 1,
-            'input_value' : '0',
-            'next_state': 3
-        },
-        {
-            'current_state' : 1,
-            'input_value' : '1',
-            'next_state': 0
-        },
-        {
-            'current_state' : 2,
-            'input_value' : '0',
-            'next_state': 0
-        },
-        {
-            'current_state' : 2,
-            'input_value' : '1',
-            'next_state': 3
-        },
-        {
-            'current_state' : 3,
-            'input_value' : '0',
-            'next_state': 1
-        },
-        {
-            'current_state' : 3,
-            'input_value' : '1',
-            'next_state': 2
-        },
-    ]
-
-    dfa = DFA({0,1,2,3},{'0','1'},transitions_func,0,[0])
-    dfa.print_DFA()
-
-    print('\nInput: "110"')
-    dfa.get_input('110')
-
-    print('\nInput: "1"')
-    dfa.get_input('1')
-
-    print('\nInput: "110101"')
-    dfa.get_input('110101')
-
-
