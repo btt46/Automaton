@@ -36,6 +36,7 @@ class DFA:
         if self.__accepted_states.issubset(self.__states) == False:
             raise ValueError("The set of final states is not a subset of the set of states")        
 
+    # Create a data frame for transition functions
     @property
     def transition_table(self):
         _state = []
