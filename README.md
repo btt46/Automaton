@@ -1,3 +1,8 @@
+# Packages
+Install packages: 
+
+    pip3 install -r requirementes.txt
+
 # Automaton
 
 ### I. Deterministic Finite Automaton (DFA)
