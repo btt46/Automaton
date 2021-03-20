@@ -89,23 +89,16 @@ class DFA:
     def get_input(self, input_string):
         for input_char in input_string:
             if input_char not in self.__input_set:
-                print(input_char)
                 print("There is no input in input_set")
                 return self
-            self.__current_state = int(self.transition_table.loc[
-                                                (self.transition_table['current_state']== self.__current_state) \
-                                                & (self.transition_table['input_value']==input_char)        \
-                                            ]['next_state']
-                                      )
-        # print current state and check whether 
-        # the input string is accepted or not
-        print("current state: ", self.__current_state)
-        print("Accepted ? ---> ", self.__accepted())
-
+            else:
+                self.__current_state = int(self.transition_table.loc[
+                                              (self.transition_table['current_state']== self.__current_state) \
+                                             &(self.transition_table['input_value']==input_char)        \
+                                           ]['next_state'])
         output = (self.__current_state, self.__accepted())
-
+        self.__print_result()        
         self.__reset()
-
         return output
 
     # set the current state to the initial state
@@ -117,4 +110,10 @@ class DFA:
         if self.__current_state in self.accepted_states:
             return True
         return False
+
+    def __print_result(self):
+        # print current state and check whether 
+        # the input string is accepted or not
+        print("current state: ", self.__current_state)
+        print("Accepted ? ---> ", self.__accepted())
     
